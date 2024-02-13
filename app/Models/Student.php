@@ -12,12 +12,17 @@ class Student extends Model
     protected $table = 'students';
 
     protected $fillable = [
+        'id_kelas',
         'NIS',
         'name',
+        'role',
         'tahun_lahir',
-        'kelas',
         'alamat',
         'image',
-        'quotes'
     ];
+
+    public function kelas()
+    {
+        return $this->belongsTo(Kelas::class, 'id_kelas');
+    }
 }
