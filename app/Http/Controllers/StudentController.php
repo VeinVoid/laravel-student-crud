@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Kelas;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
@@ -18,31 +19,35 @@ class StudentController extends Controller
         ]);
     }
 
-    public function create()
-    {
-        return view('student.post',[
-            'title' => 'storePage',
-        ]);
-    }
-
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'NIS' => 'required',
-            'name' => 'required',
-            'tahun_lahir' => 'required',
-            'kelas' => 'required',
-            'alamat' => 'required',
-            'image' => 'required',
-            'quotes' => 'required',
+        $method = $request->input('method');
+        $kelas = Kelas::all();
+
+        if ($method == 'GET') {
+            return view('student.post',[
+                'title' => 'storePage',
+                'kelas' => $kelas
+            ]);
+        }
+
+        $validate = $request->validate([
+            'NIS'           => 'required | numeric',
+            'name'          => 'required',
+            'tahun_lahir'   => 'required',
+            'id_kelas'      => 'required | numeric',
+            'alamat'        => 'required',
+            'image'         => 'nullable',
         ]);
 
-        Student::create($request->all());
+        $result = Student::create($validate);
 
-        return redirect()->route('students.index');
+        if ($result) {
+            return redirect()->route('students.index')->with('success', "Student {$request->name} has been added.");
+        }
     }
 
     /**
@@ -56,27 +61,30 @@ class StudentController extends Controller
         ]);
     }
 
-    public function edit(Student $student)
-    {
-        return view('student.edit',[
-            'title' => 'EditPage',
-            'student' => $student,
-        ]);
-    }
 
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Student $student)
     {
+        $method = $request->input('method');
+        $kelas = Kelas::all();
+
+        if ($method == 'PUT') {
+            return view('student.edit',[
+                'title' => 'EditPage',
+                'student' => $student,
+                'kelas' => $kelas
+            ]);
+        }
+
         $request->validate([
-            'NIS' => 'required',
-            'name' => 'required',
-            'tahun_lahir' => 'required',
-            'kelas' => 'required',
-            'alamat' => 'required',
-            'image' => 'required',
-            'quotes' => 'required',
+            'NIS'           => 'nullable',
+            'name'          => 'nullable',
+            'tahun_lahir'   => 'nullable',
+            'kelas'         => 'nullable',
+            'alamat'        => 'nullable',
+            'image'         => 'nullable',
         ]);
 
         $student->update($request->all());
@@ -90,5 +98,7 @@ class StudentController extends Controller
     public function destroy(Student $student)
     {
         $student->delete();
+
+        return redirect()->route('students.index')->with('danger', "Student {$student->name} has been deleted.");
     }
 }

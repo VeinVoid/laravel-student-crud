@@ -14,24 +14,20 @@
 
 <div>
   <div style="display:flex; justify-content:space-between">
-    <h2>Data Students</h2>
+    <h2>Data Kelas</h2>
   </div>
-    <table class="table table-dark table-bordered table-striped">
+    <table class="table table-dark table-bordered table-striped text-center">
       <thead>
-        <tr class="text-center">
+        <tr>
           <th>No</th>
-          <th>NIS</th>
           <th>Nama</th>
-          <th>Kelas</th>
         </tr>
       </thead>
       <tbody>
-        @foreach ($students as $key => $student)
-            <tr class="text-center">
+        @foreach ($kelas as $key => $kelas)
+            <tr>
               <td>{{ $key + 1 }}</td>
-              <td>{{ $student->NIS }}</td>
-              <td>{{ $student->name }}</td>
-              <td>{{ $student->kelas->nama }}</td>            
+              <td>{{ $kelas->nama }}</td>            
             </tr>
         @endforeach
       </tbody>
