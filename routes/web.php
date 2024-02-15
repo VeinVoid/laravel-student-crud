@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelasController;
+use App\Http\Controllers\SchoolsController;
 use App\Http\Controllers\StudentController;
+use App\Http\Middleware\SecurityRouteMiddleware;
 use App\Models\Students;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +42,18 @@ Route::get('/about', function () {
 // Route::get('/students', [StudentsController::class, 'index']);
 
 Route::get('/', [DashboardController::class, 'homeView'])->name('dashboard.home');
+
+Route::group(['prefix' => '/school'], function () {
+    Route::get('/', [SchoolsController::class, 'index'])->name('schools.index');
+
+    Route::group(['middleware' => SecurityRouteMiddleware::class], function () {
+        Route::get('/create', [SchoolsController::class, 'store'])->name('student.create');
+        Route::post('/', [SchoolsController::class, 'store'])->name('student.store');
+        Route::get('/edit/{student}', [SchoolsController::class, 'update'])->name('student.edit');
+        Route::put('/put/{student}', [SchoolsController::class, 'update'])->name('student.update');
+        Route::delete('/delete/{student}', [SchoolsController::class, 'destroy'])->name('students.destroy');
+    });
+});
 
 Route::group(['prefix' => '/students'], function () {
     Route::get('/', [StudentController::class, 'index'])->name('students.index');

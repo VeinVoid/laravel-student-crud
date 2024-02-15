@@ -20,7 +20,7 @@
           </li>
         </ul>
         @guest
-            <a class="btn btn-danger d-flex" aria-current="page" href="/auth/login?method=GET">Login</a>
+          <a class="btn btn-danger d-flex" aria-current="page" href="/auth/login?method=GET">Login</a>
         @endguest
         @auth
           <div class="d-flex" id="navbarNavDarkDropdown">
