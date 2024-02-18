@@ -16,26 +16,22 @@
     </div>
     <script src="/js/sidebar.js"></script>
     <script>
-      $(document).ready(function() {
-        $('.home-sidebar, .school-sidebar, .teacher-sidebar, .student-sidebar').click(function(e) {
-          var url = $(this).find('a').attr('href');
-          loadContent(url);
-        });
-    
-        function loadContent(url) {
-          $.ajax({
-            url: url,
-            type: 'GET',
-            success: function(response) {
-              $('#mainContent').html(response);
-            },
-            error: function(xhr, status, error) {
-              console.error('Error:', error);
-            }
+      document.addEventListener("DOMContentLoaded", function() {
+          const currentUrl = window.location.href;
+          const sidebarLinks = document.querySelectorAll('.sidebar a');
+  
+          // Loop melalui setiap link di sidebar
+          sidebarLinks.forEach(link => {
+              // Bandingkan URL saat ini dengan URL link
+              if (link.href === currentUrl) {
+                  // Tambahkan kelas active ke link yang sesuai
+                  link.classList.add('active');
+              }
           });
-        }
       });
-    </script>
+  </script>
+  
+  
     @yield('scripts')
   </body>
 </html>

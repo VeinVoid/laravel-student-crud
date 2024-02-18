@@ -67,8 +67,8 @@
                         <p class="m-0">{{ $school->headmaster ? $school->headmaster->name : 'Unknown' }}</p>
                     </div>
                     <div style="width: 10%">
-                        <p class="m-0">{{ $totalStudents }}</p>
-                    </div>
+                        <p class="m-0">{{ $school->kelas->sum(function ($kelas) { return $kelas->students->count(); }) }}</p>
+                    </div>                    
                     <div class="d-flex" style="width: 12%">
                         <button type="button" class="btn btn-primary" style="margin-right: 2%">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="margin-bottom: 10%">
