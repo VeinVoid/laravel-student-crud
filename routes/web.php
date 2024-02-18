@@ -47,11 +47,11 @@ Route::group(['prefix' => '/school'], function () {
     Route::get('/', [SchoolsController::class, 'index'])->name('schools.index');
 
     Route::group(['middleware' => SecurityRouteMiddleware::class], function () {
-        Route::get('/create', [SchoolsController::class, 'store'])->name('student.create');
-        Route::post('/', [SchoolsController::class, 'store'])->name('student.store');
-        Route::get('/edit/{student}', [SchoolsController::class, 'update'])->name('student.edit');
-        Route::put('/put/{student}', [SchoolsController::class, 'update'])->name('student.update');
-        Route::delete('/delete/{student}', [SchoolsController::class, 'destroy'])->name('students.destroy');
+        Route::get('/create', [SchoolsController::class, 'storeView'])->name('school.create');
+        Route::post('/', [SchoolsController::class, 'store'])->name('school.store');
+        Route::get('/edit/{school}', [SchoolsController::class, 'updateView'])->name('school.edit');
+        Route::put('/put/{school}', [SchoolsController::class, 'update'])->name('school.update');
+        Route::delete('/delete/{school}', [SchoolsController::class, 'destroy'])->name('school.destroy');
     });
 });
 

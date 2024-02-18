@@ -11,6 +11,8 @@ class School extends Model
 
     protected $table = 'schools';
 
+    protected $fillable = ['name', 'type', 'address'];
+
     public function kelas()
     {
         return $this->hasMany(Kelas::class, 'school_id');
