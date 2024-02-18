@@ -1,5 +1,10 @@
 @extends('layouts.main')
 @section('container')
+    @if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+    @endif
     <div>
         <div class="shadow-sm p-3 mb-5 bg-body rounded">
             <div class="d-flex justify-content-between" style="margin-left:2%; margin-right:2%">

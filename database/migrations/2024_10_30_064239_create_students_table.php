@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('id_kelas');
             $table->integer('NIS')->uniqid();
-            $table->enum('role', ['headmaster', 'teacher', 'student'])->default('student');
             $table->string('name');
+            $table->enum('role', ['leader', 'vice leader', 'treasurer', 'secretary', 'student'])->default('student');
             $table->date('tahun_lahir');
             $table->text('alamat');
             $table->text('image');

@@ -10,4 +10,16 @@ class School extends Model
     use HasFactory;
 
     protected $table = 'schools';
+
+    protected $fillable = ['name', 'type', 'address'];
+
+    public function kelas()
+    {
+        return $this->hasMany(Kelas::class, 'school_id');
+    }
+
+    public function teachers()
+    {
+        return $this->hasMany(Teacher::class, 'school_id');
+    }
 }

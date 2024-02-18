@@ -18,3 +18,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/banners', [BannerController::class, 'index']);
+Route::post('/banners', [BannerController::class, 'store']);
+Route::post('/banner/edit/{banner}', [BannerController::class, 'update']);
+Route::delete('/banner/delete/{banner}', [BannerController::class, 'destroy']);

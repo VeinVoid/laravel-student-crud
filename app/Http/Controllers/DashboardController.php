@@ -14,7 +14,6 @@ class DashboardController extends Controller
         $headmasterCount = Student::where('role', 'headmaster')->count(); 
         $teacherCount = Student::where('role', 'teacher')->count();
         $studentCount = Student::where('role', 'student')->count();
-
         return view('dashboard.home',[
             'title' => 'homePage',
             'schoolCount' => $schoolCount,

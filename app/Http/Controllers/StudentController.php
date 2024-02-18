@@ -13,9 +13,16 @@ class StudentController extends Controller
      */
     public function index()
     {
+        $auth = auth()->user();
+
+        $students = Student::join('kelas', 'students.id_kelas', '=', 'kelas.id')
+            ->where('kelas.school_id', $auth->school_id)
+            ->orderBy('students.id_kelas', 'asc')
+            ->get();
+
         return view('student.all',[
             'title' => 'All Student',
-            "students" => Student::all()
+            "students" => $students
         ]);
     }
 
