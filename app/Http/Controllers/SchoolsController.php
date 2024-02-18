@@ -16,8 +16,6 @@ class SchoolsController extends Controller
         $filterType = request('type') ? request('type') : 'all';
         $filterSearch = request('search');
 
-        $totalStudents = 0;
-
         $schools = School::with(['kelas.students', 'teachers'])
             ->when($filterType != 'all', function ($query) use ($filterType) {
                 return $query->where('type', $filterType);
@@ -29,16 +27,11 @@ class SchoolsController extends Controller
 
         foreach ($schools as $school) {
             $school->headmaster = $school->teachers->where('role', 'headmaster')->first();
-
-            foreach ($school->kelas as $kelas) {
-                $totalStudents += $kelas->students->count();
-            }
         }
 
         return view('dashboard.school', [
             'title'         => 'Schools',
             'schools'       => $schools,
-            'totalStudents' => $totalStudents,
             'filterType'    => $filterType,
             'filterSearch'  => $filterSearch
         ]);

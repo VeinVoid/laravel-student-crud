@@ -5,7 +5,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\KelasController;
 use App\Http\Controllers\SchoolsController;
 use App\Http\Controllers\StudentController;
+use App\Http\Middleware\SecurityAdmin;
 use App\Http\Middleware\SecurityRouteMiddleware;
+use App\Http\Middleware\SecurityTeacher;
 use App\Models\Students;
 use Illuminate\Support\Facades\Route;
 
@@ -46,7 +48,7 @@ Route::get('/', [DashboardController::class, 'homeView'])->name('dashboard.home'
 Route::group(['prefix' => '/school'], function () {
     Route::get('/', [SchoolsController::class, 'index'])->name('schools.index');
 
-    Route::group(['middleware' => SecurityRouteMiddleware::class], function () {
+    Route::group(['middleware' => SecurityAdmin::class], function () {
         Route::get('/create', [SchoolsController::class, 'storeView'])->name('school.create');
         Route::post('/', [SchoolsController::class, 'store'])->name('school.store');
         Route::get('/edit/{school}', [SchoolsController::class, 'updateView'])->name('school.edit');
@@ -57,12 +59,15 @@ Route::group(['prefix' => '/school'], function () {
 
 Route::group(['prefix' => '/students'], function () {
     Route::get('/', [StudentController::class, 'index'])->name('students.index');
-    Route::get('/create', [StudentController::class, 'store'])->name('student.create');
-    Route::post('/', [StudentController::class, 'store'])->name('student.store');
-    Route::get('/edit/{student}', [StudentController::class, 'update'])->name('student.edit');
-    Route::put('/put/{student}', [StudentController::class, 'update'])->name('student.update');
-    Route::get('/{student}', [StudentController::class, 'show']);
-    Route::delete('/delete/{student}', [StudentController::class, 'destroy'])->name('students.destroy');
+
+    Route::group(['middleware' => SecurityTeacher::class, "handle"], function () {
+        Route::get('/create', [StudentController::class, 'storeView'])->name('student.create');
+        Route::post('/', [StudentController::class, 'store'])->name('student.store');
+        Route::get('/edit/{student}', [StudentController::class, 'updateView'])->name('student.edit');
+        Route::put('/put/{student}', [StudentController::class, 'update'])->name('student.update');
+        Route::get('/{student}', [StudentController::class, 'show']);
+        Route::delete('/delete/{student}', [StudentController::class, 'destroy'])->name('student.destroy');
+    });
 });
 
 Route::group(['prefix' => '/kelas'], function () {
@@ -76,8 +81,8 @@ Route::group(['prefix' => '/kelas'], function () {
 });
 
 Route::group(['prefix' => '/auth'], function () {
-    Route::get('/login', [AuthController::class, 'login'])->name('login');
-    Route::get('/register', [AuthController::class, 'register'])->name('register');
+    Route::get('/login', [AuthController::class, 'loginView'])->name('login');
+    Route::get('/register', [AuthController::class, 'registerView'])->name('register');
     Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
     Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
     Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
