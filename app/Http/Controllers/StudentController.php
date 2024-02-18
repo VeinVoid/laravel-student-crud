@@ -15,32 +15,31 @@ class StudentController extends Controller
     {
         $auth = auth()->user();
 
-        $students = Student::join('kelas', 'students.id_kelas', '=', 'kelas.id')
-            ->where('kelas.school_id', $auth->school_id)
-            ->orderBy('students.id_kelas', 'asc')
-            ->get();
+        $students = Student::whereHas('kelas', function ($query) use ($auth) {
+            $query->where('school_id', $auth->school_id);
+        })
+        ->orderBy('role', 'asc')
+        ->paginate(7);
+        
 
-        return view('student.all',[
+        return view('dashboard.student',[
             'title' => 'All Student',
             "students" => $students
         ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function storeView()
     {
-        $method = $request->input('method');
         $kelas = Kelas::all();
 
-        if ($method == 'GET') {
-            return view('student.post',[
-                'title' => 'storePage',
-                'kelas' => $kelas
-            ]);
-        }
+        return view('student.post',[
+            'title' => 'storePage',
+            'kelas' => $kelas
+        ]);
+    }
 
+    public function store(Request $request)
+    {
         $validate = $request->validate([
             'NIS'           => 'required | numeric',
             'name'          => 'required',
@@ -68,23 +67,19 @@ class StudentController extends Controller
         ]);
     }
 
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Student $student)
+    public function updateView(Student $student)
     {
-        $method = $request->input('method');
         $kelas = Kelas::all();
 
-        if ($method == 'PUT') {
-            return view('student.edit',[
-                'title' => 'EditPage',
-                'student' => $student,
-                'kelas' => $kelas
-            ]);
-        }
+        return view('student.edit',[
+            'title' => 'EditPage',
+            'student' => $student,
+            'kelas' => $kelas
+        ]);
+    }
 
+    public function update(Request $request, Student $student)
+    {
         $request->validate([
             'NIS'           => 'nullable',
             'name'          => 'nullable',

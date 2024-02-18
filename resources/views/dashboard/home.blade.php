@@ -5,6 +5,12 @@
         {{ session('error') }}
     </div>
     @endif
+
+    @if(session('success'))
+    <div class="alert alert-success">
+        {{ session('success') }}
+    </div>
+    @endif
     <div>
         <div class="shadow-sm p-3 mb-5 bg-body rounded">
             <div class="d-flex justify-content-between" style="margin-left:2%; margin-right:2%">

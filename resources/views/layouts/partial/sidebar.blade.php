@@ -55,6 +55,16 @@
           <li class="nav-item student-sidebar">
             <a href="/students" class="nav-link text-white">Student</a>
           </li>
+        @elseif (auth()->user()->role == 'student')
+          <li class="nav-item home-sidebar">
+            <a href="/" class="nav-link text-white" aria-current="page">Home</a>
+          </li>
+          <li class="nav-item school-sidebar">
+            <a href="/school" class="nav-link text-white">School</a>
+          </li>
+          <li class="nav-item student-sidebar">
+            <a href="/students" class="nav-link text-white">Student</a>
+          </li>
         @endif
       @endauth
     </ul>
