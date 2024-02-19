@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Kelas>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\School>
  */
-class KelasFactory extends Factory
+class SchoolFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,8 +17,9 @@ class KelasFactory extends Factory
     public function definition(): array
     {
         return [
-            'school_id' => $this->faker->numberBetween(1, 10),
-            'name' => $this->faker->word,
+            'name' => $this->faker->company,
+            'type' => $this->faker->randomElement(['negeri', 'swasta']),
+            'address' => $this->faker->address,
         ];
     }
 }

@@ -3,14 +3,9 @@
   <div>
     <div>
       <h2>Data Students</h2>
-      <p>{{ $students->count() }} data found</p>
+      <p class="students-count">{{ $students->count() }} data found</p>
     </div>
-    <div class="d-flex justify-content-between align-items-center">
-      <div class="d-flex justify-content-between w-25">
-          <p class="text-center mb-3 filter-option" data-type="all" style="cursor: pointer; ">All students</p>
-          <p class="text-center mb-3 filter-option" data-type="negeri" style="cursor: pointer; color: rgb(200, 200, 200);">Negeri</p>
-          <p class="text-center mb-3 filter-option" data-type="swasta" style="cursor: pointer; color: rgb(200, 200, 200);">Swasta</p>
-      </div>
+    <div class="d-flex justify-content-end align-items-center">
       @guest
         <div class="mb-3 w-25 d-flex">
           <div class="input-group">
@@ -31,7 +26,7 @@
         </div>
       @endauth
     </div>
-    <div>
+    <div id="student-list">
       <div class="d-flex justify-content-between align-items-center bg-light rounded" style="height: 45px;">
         <div style="margin-left: 3%; width: 10%">
             <p class="m-0">Id</p>
@@ -52,7 +47,7 @@
       @foreach ($students as $key => $student)
           <div class="d-flex justify-content-between align-items-center border border-secondary rounded student-item" style="height: 45px; margin-top: 1%">
             <div style="margin-left: 3%; width: 10%">
-              <p class="m-0">Id</p>
+              <p class="m-0">{{ ($students->currentPage() - 1) * $students->perPage() + $key + 1;}}</p>
             </div>
             <div style="width: 15%">
                 <p class="m-0">{{ $student->NIS }}</p>
@@ -93,12 +88,12 @@
     <nav aria-label="Page navigation example" class="mt-4">
       <ul class="pagination justify-content-center">
           <li class="page-item {{ $students->previousPageUrl() ? '' : 'disabled' }}">
-              <a class="page-link" href="{{ $students->previousPageUrl() }}" tabindex="-1" aria-disabled="true">&laquo;</a>
+              <a class="page-link" href="{{ $students->previousPageUrl() }}" aria-disabled="true">&laquo;</a>
           </li>
           @foreach ($students->getUrlRange(1, $students->lastPage()) as $page => $url)
-              <li class="page-item {{ $page == $students->currentPage() ? 'active' : '' }}">
-                  <a class="page-link" href="{{ $url }}">{{ $page }}</a>
-              </li>
+            <li class="page-item {{ $page == $students->currentPage() ? 'active' : '' }}">
+              <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+            </li>
           @endforeach
           <li class="page-item {{ $students->nextPageUrl() ? '' : 'disabled' }}">
               <a class="page-link" href="{{ $students->nextPageUrl() }}">&raquo;</a>
@@ -106,4 +101,38 @@
       </ul>
     </nav>  
   </div>
+@endsection
+
+@section('scripts')
+  <script>
+    var url = window.location.href;
+    $(document).ready(function() {
+        $('#button-addon2').click(function() {
+            var search = $('.form-control').val();
+
+            if (url.includes('?')) {
+                url += '&search=' + search;
+            } else {
+                url += '?search=' + search;
+            }
+
+            $.ajax({
+                url: url,
+                type: 'GET',
+                success: function(response) {
+                    console.log(response);
+
+                    var schoolCount = $(response).find('#students-count').text();
+                    var schoolListFragment = $(response).find('#student-list');
+    
+                    $('#student-list').html(schoolListFragment);
+                    $('#students-count').text(schoolCount);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error:', error);
+                }
+            });
+        });
+    });
+  </script>
 @endsection

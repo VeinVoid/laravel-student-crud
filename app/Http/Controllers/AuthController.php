@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\Hash;
 class AuthController extends Controller
 {
     public function loginView() {
+
+        if(Auth::check()) return redirect()->route('dashboard.home');
+
         return view('auth.login', [
             'title' => 'Login',
         ]);
@@ -37,6 +40,8 @@ class AuthController extends Controller
     public function registerView() {
         $schools = School::all();
         $kelas = Kelas::all();
+
+        if(Auth::check()) return redirect()->route('dashboard.home');
 
         return view('auth.register',[
             'title'     => 'Register',

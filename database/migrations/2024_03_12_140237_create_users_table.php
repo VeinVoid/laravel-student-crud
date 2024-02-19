@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('role', ['headmaster', 'teacher', 'student'])->default('student');
+            $table->enum('role', ['headmaster', 'teacher', 'student','admin'])->default('admin');
             $table->timestamps();
 
             $table->foreign('school_id')->references('id')->on('schools')->onDelete('cascade');
