@@ -17,7 +17,9 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_kelas' => $this->faker->numberBetween(1, 10),
+            'id_kelas' => function () {
+                return \App\Models\Kelas::factory()->create()->id;
+            },
             'NIS' => $this->faker->unique()->randomNumber(),
             'name' => $this->faker->name,
             'role' => $this->faker->randomElement(['leader','vice leader','treasurer','secretary','student']),
