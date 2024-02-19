@@ -2,7 +2,9 @@
 
 namespace Database\Seeders;
 
+use App\Models\City;
 use App\Models\Kelas;
+use App\Models\Province;
 use App\Models\School;
 use App\Models\Student;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -15,6 +17,8 @@ class StudentSeeder extends Seeder
      */
     public function run(): void
     {
+        Province::factory(10)->create();
+        City::factory(10)->create();
         School::factory(10)->create();
         Kelas::factory(10)->create();
         Student::factory(10)->create();
