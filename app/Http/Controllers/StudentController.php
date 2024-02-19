@@ -14,13 +14,14 @@ class StudentController extends Controller
     public function index()
     {
         $auth = auth()->user();
+        $filterSearch = request('search');
 
         $students = Student::whereHas('kelas', function ($query) use ($auth) {
             $query->where('school_id', $auth->school_id);
-        })
-        ->orderBy('role', 'asc')
+        })->when($filterSearch, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })->orderBy('role', 'asc')
         ->paginate(7);
-        
 
         return view('dashboard.student',[
             'title' => 'All Student',

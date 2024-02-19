@@ -17,13 +17,13 @@ class StudentFactory extends Factory
     public function definition(): array
     {
         return [
-            'id_kelas' => $this->faker->randomDigit(),
-            'NIS' => $this->faker->randomNumber(5, true),
-            'name' => $this->faker->name(),
-            'tahun_lahir' => $this->faker->dateTimeBetween('-20 years', 'now')->format('Y-m-d'),
-            'alamat' => $this->faker->address(),
-            'image' => $this->faker->sentence(40),
-            'quotes' => $this->faker->sentence(40),
+            'id_kelas' => $this->faker->numberBetween(1, 10),
+            'NIS' => $this->faker->unique()->randomNumber(),
+            'name' => $this->faker->name,
+            'role' => $this->faker->randomElement(['leader','vice leader','treasurer','secretary','student']),
+            'tahun_lahir' => $this->faker->date('Y-m-d'),
+            'alamat' => $this->faker->address,
+            'image' => $this->faker->imageUrl(),
         ];
     }
 }
